@@ -1,6 +1,6 @@
 import cv2
 
-img = cv2.imread("flower.png")
+img = cv2.imread("images/flower.png")
 img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
 win_name = "Image Filter"

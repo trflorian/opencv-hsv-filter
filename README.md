@@ -2,7 +2,7 @@
 
 This project shows how to use OpenCV Python trackbars / sliders to tune thresholds for an HSV color filter.
 
-![cover](cover.png)
+![cover](media/cover.png)
 
 ## Requirements
 
@@ -13,7 +13,7 @@ Run `pip install -r requirements.txt` to install the dependency.
 
 Run `python main.py` to start the GUI sample with the flower image.
 
-![sample](sample.png)
+![sample](media/sample.png)
 
 ## Trackbar Sample Code
 

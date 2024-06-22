@@ -127,5 +127,5 @@ class ImageFilter:
 
 
 if __name__ == "__main__":
-    img_filter = ImageFilter("flower.png")
+    img_filter = ImageFilter(img_path="images/flower.png")
     img_filter.run()
