@@ -13,6 +13,8 @@ Run `pip install -r requirements.txt` to install the dependency.
 
 Run `python main.py` to start the GUI sample with the flower image.
 
+![sample](sample.png)
+
 ## Trackbar Sample Code
 
 Checkout the `trackbar_explicit.py` and `trackbars_from_array.py` for alternative sample code to setup the trackbars
