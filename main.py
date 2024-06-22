@@ -1,66 +1,51 @@
 import cv2
 
 img = cv2.imread("flower.png")
+img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
 win_name = "Image Filter"
 cv2.namedWindow(win_name)
 
+channel_max_values = {
+    "Hue": 180,
+    "Saturation": 255,
+    "Value": 255,
+}
 
-class ImageFilter:
-    def __init__(self, image, win_name) -> None:
-        self.image = image
-        self.image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        self.win_name = win_name
+filter_values = {
+    "Hue Min": 0,
+    "Hue Max": 180,
+    "Saturation Min": 0,
+    "Saturation Max": 255,
+    "Value Min": 0,
+    "Value Max": 255,
+}
 
-        self.hue_min, self.sat_min, self.val_min = 0, 0, 0
-        self.hue_max, self.sat_max, self.val_max = 180, 255, 255
+def show_filtered_image():
+    img_mask = cv2.inRange(
+        img_hsv,
+        lowerb=(filter_values["Hue Min"], filter_values["Saturation Min"], filter_values["Value Min"]),
+        upperb=(filter_values["Hue Max"], filter_values["Saturation Max"], filter_values["Value Max"]),
+    )
 
-    def show_filtered_image(self):
-        img_mask = cv2.inRange(
-            self.image_hsv,
-            lowerb=(self.hue_min, self.sat_min, self.val_min),
-            upperb=(self.hue_max, self.sat_max, self.val_max),
-        )
+    img_filtered = cv2.bitwise_and(img, img, mask=img_mask)
 
-        img_filtered = cv2.bitwise_and(self.image, self.image, mask=img_mask)
+    cv2.imshow(win_name, img_filtered)
 
-        cv2.imshow(self.win_name, img_filtered)
+def on_filter_value_changed(trackbar_name, new_value):
+    global filter_values
+    filter_values[trackbar_name] = new_value
+    show_filtered_image()
 
-    def on_hue_min_change(self, value):
-        self.hue_min = value
-        self.show_filtered_image()
-    
-    def on_hue_max_change(self, value):
-        self.hue_max = value
-        self.show_filtered_image()
-    
-    def on_sat_min_change(self, value):
-        self.sat_min = value
-        self.show_filtered_image()
-    
-    def on_sat_max_change(self, value):
-        self.sat_max = value
-        self.show_filtered_image()
-    
-    def on_val_min_change(self, value):
-        self.val_min = value
-        self.show_filtered_image()
-    
-    def on_val_max_change(self, value):
-        self.val_max = value
-        self.show_filtered_image()
+for channel_name, channel_max_value in channel_max_values.items():
+    trackbar_name_min = f"{channel_name} Min"
+    trackbar_name_max = f"{channel_name} Max"
 
+    filter_values[trackbar_name_min] = 0
+    filter_values[trackbar_name_max] = channel_max_value
 
-img_filter = ImageFilter(img, win_name)
-
-cv2.createTrackbar("Hue Min", win_name, img_filter.hue_min, 180, img_filter.on_hue_min_change)
-cv2.createTrackbar("Hue Max", win_name, img_filter.hue_max, 180, img_filter.on_hue_max_change)
-
-cv2.createTrackbar("Sat Min", win_name, img_filter.sat_min, 255, img_filter.on_sat_min_change)
-cv2.createTrackbar("Sat Max", win_name, img_filter.sat_max, 255, img_filter.on_sat_max_change)
-
-cv2.createTrackbar("Val Min", win_name, img_filter.val_min, 255, img_filter.on_val_min_change)
-cv2.createTrackbar("Val Max", win_name, img_filter.val_max, 255, img_filter.on_val_max_change)
+    cv2.createTrackbar(trackbar_name_min, win_name, 0, channel_max_value, lambda value, trackbar_name=trackbar_name_min: on_filter_value_changed(trackbar_name, value))
+    cv2.createTrackbar(trackbar_name_max, win_name, channel_max_value, channel_max_value, lambda value, trackbar_name=trackbar_name_max: on_filter_value_changed(trackbar_name, value))
 
 
 while True:
