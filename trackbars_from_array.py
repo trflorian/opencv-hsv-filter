@@ -29,10 +29,10 @@ while True:
     sat_min, sat_max = min(sat_min, sat_max), max(sat_min, sat_max)
     val_min, val_max = min(val_min, val_max), max(val_min, val_max)
 
-    sldier_values = [hue_min, hue_max, sat_min, sat_max, val_min, val_max]
+    slider_values = [hue_min, hue_max, sat_min, sat_max, val_min, val_max]
 
     # adjust trackbar positions
-    for slider, value in zip(sliders, sldier_values):
+    for slider, value in zip(sliders, slider_values):
         cv2.setTrackbarPos(slider[0], win_name, value)
 
     img_mask = cv2.inRange(
